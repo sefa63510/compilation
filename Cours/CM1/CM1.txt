@@ -91,3 +91,69 @@ Arbre de dérivation (début) :
 Ce mot admet plusieurs arbres de dérivation, car + et * ont la
 même priorité et aucune associativité n'est imposée.
 La grammaire est donc ambiguë.
+
+
+Un jeton est composé :
+  - d'une unité lexicale T
+  - d'un lexème de T
+  - d'autres informations :
+      - numéro de ligne, numéro de colonne
+      - valeur (ex : la valeur entière pour un lexème qui
+        représente un entier)
+
+L'analyseur lexical produit un flux de jetons pour l'analyseur
+syntaxique.
+
+
+COMMENT FAIRE ?
+--------------------------------------------------
+  - Chaque unité lexicale du langage est décrite par une
+    expression régulière.
+  - Un analyseur lexical = l'union des automates à états finis
+    associés aux unités lexicales
+    + des actions qui calculent les jetons à partir des lexèmes
+      reconnus.
+
+
+LES DEUX PROBLÈMES À RÉSOUDRE
+--------------------------------------------------
+  1. Intersection de deux unités lexicales :
+     laquelle choisir pour un lexème lu ?
+  2. Un lexème peut être préfixe d'un autre lexème :
+     que faire ?
+
+
+A/ CAS DE L'INTERSECTION DES UNITÉS LEXICALES
+--------------------------------------------------
+Solution simple : on ordonne les règles des unités lexicales.
+Quand un lexème appartient à plusieurs unités lexicales, on choisit
+celle dont la règle est écrite en premier.
+
+Avec ANTLR : l'ordre retenu est l'ordre d'écriture des règles.
+
+Exemple :
+    BEGIN : 'begin' ;
+    ID    : [a-z]+ ;
+
+Il y a 2 unités lexicales, BEGIN et ID. Le lexème "begin"
+appartient aux deux : il sera considéré comme un lexème de BEGIN,
+car cette règle est écrite avant ID.
+
+
+B) CAS D'UN LEXÈME PRÉFIXE D'UN AUTRE
+--------------------------------------------------
+Deux solutions :
+
+  - Greedy (gourmand) : on lit le lexème le plus long possible.
+    C'est la solution par défaut d'ANTLR.
+
+  - Non greedy : on prend le lexème le plus court. Dès qu'une
+    suite de caractères est acceptée, on arrête la lecture.
+    (En ANTLR, on l'écrit avec l'opérateur ?, par exemple .*? )
+
+Exemple : Beginner avec la méthode glouton sera reconnus comme 1 lexème de ID 
+          Avec la méthode non glouton , il y'aura deux lexème 
+          'begin' et 'non'
+
+Exemple 2 : STRING : ' " ' . * ' " ' 
+Avec la méthode gloutonne  : " m1 " " m2 "    
