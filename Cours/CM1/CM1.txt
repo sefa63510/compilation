@@ -1,38 +1,93 @@
-Cours compilation : 
-    Objectif : apprendre les différents conncepts d'un compilateur 
-        On se restreint : 
-        - certaines construction des langages de programmations (pas de construction dynamique)
-        - certaines étapes d'un compilateur
-    
-    -> Analyse léxicale     //Principes
-    -> Analyse syntaxique   // 
-    -> Analyse Sémantique
-    -> Générateur de code 
+==================================================
+COURS DE COMPILATION
+==================================================
 
-    compilation : Traduction d'un langage L vers un langage L '
+INTRODUCTION
+--------------------------------------------------
+Définition : compiler, c'est traduire un programme écrit dans un
+langage source L vers un langage cible L'.
 
-    Pratique : 
-        -> langage conçu par l'étudiant avec des constructions demandées.
-        -> langage cible L' = langage d'un machine virtuelle appelé MVaP
-    Outil de génération du compilateur = ANT4R
+Objectif : comprendre les principaux concepts d'un compilateur.
+On se restreint à :
+  - certaines constructions des langages de programmation
+    (pas de constructions dynamiques)
+  - certaines étapes de la compilation
 
-    Les langages d'écriture seront langage 
-    ->  d'Antar
-    ->  Java
+Étapes étudiées :
+  1. Analyse lexicale      (principes)
+  2. Analyse syntaxique
+  3. Analyse sémantique
+  4. Génération de code
 
-    MCCCs : ->Examen Ecrit (Décembre ou Janvier)
-            ->TP Noté
-    
-    La syntaxe du langage de programmation à concevoir sera décrite avec une grammaire hors 
-    contexte
+Pratique :
+  - Chaque étudiant conçoit son propre langage, avec des
+    constructions imposées.
+  - Langage cible L' : langage d'une machine virtuelle, la MVaP.
+  - Outil de génération du compilateur : ANTLR4.
+  - Langages d'écriture : le langage d'ANTLR et Java.
 
-    Certaines construction sont ambigues , on va voir des heuristiques pour les rendres non 
-    ambigues 
+Évaluation (MCCC) :
+  - Examen écrit (décembre ou janvier)
+  - TP noté
 
-Chapitre 1 : Analyse léxicale
-    | Code Source | - flux de caractère -> | Analyseur léxicale | - Jeton -> | Analyseur syntaxique
+À retenir :
+  - La syntaxe du langage à concevoir est décrite par une
+    grammaire hors contexte.
+  - Certaines constructions sont ambiguës : on verra des
+    heuristiques pour les rendre non ambiguës.
 
-Un jeton est un ensemble d'informations qui caractérise un objet considéré comme un terminal
-de la grammaire hors contexte 
-1 lexème : Suite de caractère 
-1 unité léxicale : ensemble de lexème
+
+==================================================
+CHAPITRE 1 : ANALYSE LEXICALE
+==================================================
+
+Schéma :
+
+  Code source --(flux de caractères)--> Analyseur lexical
+              --(jetons)--> Analyseur syntaxique
+
+Définitions :
+  - Jeton : ensemble d'informations qui caractérise un objet
+    considéré comme un terminal de la grammaire hors contexte.
+  - Lexème : suite de caractères du code source.
+  - Unité lexicale : ensemble (classe) de lexèmes de même nature.
+
+
+EXEMPLE 1
+--------------------------------------------------
+Grammaire : E -> E + E | E * E | nb
+Code source : nb + nb + nb * nb * nb + nb
+
+Lexèmes : 11 au total
+  - 6 occurrences de nb
+  - 3 occurrences de +
+  - 2 occurrences de *
+
+Unités lexicales : 2
+  - une pour le lexème nb
+  - une pour les lexèmes + et *
+(Si on crée une unité par terminal : 3 unités, nb, + et *.)
+
+
+EXEMPLE 2 : GRAMMAIRE AMBIGUË
+--------------------------------------------------
+Grammaire :
+  F -> F * F | F + F | I
+  I -> 0 I | 1 I | epsilon
+
+Mot analysé : 0 + 1 * 01 * 110 + 111
+
+Arbre de dérivation (début) :
+
+                 F
+           +-----+-----+
+           F     +     F
+           |           |
+           I        +--+--+
+           |        F  *  F
+           0        |     |
+                    I     ...
+
+Ce mot admet plusieurs arbres de dérivation, car + et * ont la
+même priorité et aucune associativité n'est imposée.
+La grammaire est donc ambiguë.
