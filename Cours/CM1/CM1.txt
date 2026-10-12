@@ -22,4 +22,17 @@ Cours compilation :
 
     MCCCs : ->Examen Ecrit (Décembre ou Janvier)
             ->TP Noté
+    
+    La syntaxe du langage de programmation à concevoir sera décrite avec une grammaire hors 
+    contexte
 
+    Certaines construction sont ambigues , on va voir des heuristiques pour les rendres non 
+    ambigues 
+
+Chapitre 1 : Analyse léxicale
+    | Code Source | - flux de caractère -> | Analyseur léxicale | - Jeton -> | Analyseur syntaxique
+
+Un jeton est un ensemble d'informations qui caractérise un objet considéré comme un terminal
+de la grammaire hors contexte 
+1 lexème : Suite de caractère 
+1 unité léxicale : ensemble de lexème
