@@ -1,0 +1,25 @@
+Cours compilation : 
+    Objectif : apprendre les différents conncepts d'un compilateur 
+        On se restreint : 
+        - certaines construction des langages de programmations (pas de construction dynamique)
+        - certaines étapes d'un compilateur
+    
+    -> Analyse léxicale     //Principes
+    -> Analyse syntaxique   // 
+    -> Analyse Sémantique
+    -> Générateur de code 
+
+    compilation : Traduction d'un langage L vers un langage L '
+
+    Pratique : 
+        -> langage conçu par l'étudiant avec des constructions demandées.
+        -> langage cible L' = langage d'un machine virtuelle appelé MVaP
+    Outil de génération du compilateur = ANT4R
+
+    Les langages d'écriture seront langage 
+    ->  d'Antar
+    ->  Java
+
+    MCCCs : ->Examen Ecrit (Décembre ou Janvier)
+            ->TP Noté
+
